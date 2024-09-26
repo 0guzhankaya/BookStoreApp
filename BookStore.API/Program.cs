@@ -1,4 +1,4 @@
-using BookStore.API.Repositories;
+using BookStore.Repositories.EFCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

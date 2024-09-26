@@ -1,5 +1,5 @@
 ﻿using BookStore.Entities.Models;
-using BookStore.API.Repositories;
+using BookStore.Repositories.EFCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
