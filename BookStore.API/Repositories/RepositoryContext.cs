@@ -1,5 +1,5 @@
-﻿using BookStore.API.Models;
-using BookStore.API.Repositories.Config;
+﻿using BookStore.API.Repositories.Config;
+using BookStore.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.API.Repositories

@@ -1,4 +1,4 @@
-﻿using BookStore.API.Models;
+﻿using BookStore.Entities.Models;
 using BookStore.API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
