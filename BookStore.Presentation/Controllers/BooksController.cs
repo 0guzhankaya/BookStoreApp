@@ -1,20 +1,24 @@
 ﻿using BookStore.Entities.Models;
-using BookStore.Repositories.EFCore;
-using Microsoft.AspNetCore.Http;
+using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BookStore.API.Controllers
+namespace BookStore.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/books")]
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly RepositoryContext _repositoryContext;
+        private readonly IServiceManager _serviceManager;
 
-        public BooksController(RepositoryContext repositoryContext)
+        public BooksController(IServiceManager serviceManager)
         {
-            _repositoryContext = repositoryContext;
+            _serviceManager = serviceManager;
         }
 
         [HttpGet]
@@ -22,7 +26,7 @@ namespace BookStore.API.Controllers
         {
             try
             {
-                var books = _repositoryContext.Books.ToList();
+                var books = _serviceManager.BookService.GetAllBooks(false);
                 return Ok(books);
             }
             catch (Exception ex)
@@ -36,7 +40,7 @@ namespace BookStore.API.Controllers
         {
             try
             {
-                var book = _repositoryContext.Books.Where(b => b.Id == id).SingleOrDefault();
+                var book = _serviceManager.BookService.GetOneBook(id, false);
 
                 if (book is null)
                 {
@@ -59,8 +63,7 @@ namespace BookStore.API.Controllers
                 if (book is null)
                     return BadRequest(); // 400
 
-                _repositoryContext.Books.Add(book);
-                _repositoryContext.SaveChanges();
+                _serviceManager.BookService.CreateOneBook(book);
 
                 return StatusCode(201, book);
             }
@@ -76,21 +79,12 @@ namespace BookStore.API.Controllers
             try
             {
                 // check book?
-                var entity = _repositoryContext.Books.Where(b => b.Id == id).SingleOrDefault();
-
-                if (entity is null)
-                    return NotFound(); // 404
-
-                // check id
-                if (id != book.Id)
+                if (book is null)
                     return BadRequest(); // 400
 
-                entity.Title = book.Title;
-                entity.Price = book.Price;
+                _serviceManager.BookService.UpdateOneBook(id, book, true);
 
-                _repositoryContext.SaveChanges();
-
-                return Ok(book); // 200
+                return NoContent(); // 204
             }
             catch (Exception ex)
             {
@@ -103,15 +97,8 @@ namespace BookStore.API.Controllers
         {
             try
             {
-                var entity = _repositoryContext.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+                _serviceManager.BookService.DeleteOneBook(id, false);
 
-                if(entity is null) return NotFound(new
-                {
-                    StatusCode = 404,
-                    message = $"Book with id:{id} could not found."
-                });
-                _repositoryContext.Books.Remove(entity);
-                _repositoryContext.SaveChanges();
                 return NoContent(); // 204
             }
             catch (Exception ex)
@@ -126,12 +113,13 @@ namespace BookStore.API.Controllers
             try
             {
                 // check entity
-                var entity = _repositoryContext.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+                var entity = _serviceManager.BookService.GetOneBook(id, true);
+
                 if (entity is null)
                     return NotFound(); // 404
 
                 bookPatch.ApplyTo(entity);
-                _repositoryContext.SaveChanges();
+                _serviceManager.BookService.UpdateOneBook(id, entity, true);
 
                 return NoContent(); // 204
             }

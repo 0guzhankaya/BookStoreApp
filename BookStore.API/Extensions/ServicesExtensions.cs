@@ -1,0 +1,23 @@
+﻿using BookStore.Repositories.Contracts;
+using BookStore.Repositories.EFCore;
+using BookStore.Services;
+using BookStore.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
+
+namespace BookStore.API.Extensions
+{
+    public static class ServicesExtensions
+    {
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<RepositoryContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+        }
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) => 
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void ConfigureServiceManager(this IServiceCollection services) =>
+            services.AddScoped<IServiceManager, ServiceManager>();
+    }
+}
