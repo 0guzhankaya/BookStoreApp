@@ -2,6 +2,8 @@ using BookStore.API.Extensions;
 using BookStore.Presentation;
 using BookStore.Repositories.EFCore;
 using BookStore.Services;
+using BookStore.Services.Contracts;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
@@ -24,11 +26,19 @@ builder.Services.ConfigureLoggerService();
 
 var app = builder.Build();
 
+var logger = app.Services.GetRequiredService<ILoggerService>();
+app.ConfigureExceptionHandler(logger);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+if (app.Environment.IsProduction())
+{
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();

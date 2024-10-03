@@ -1,4 +1,5 @@
-﻿using BookStore.Entities.Models;
+﻿using BookStore.Entities.Exceptions;
+using BookStore.Entities.Models;
 using BookStore.Repositories.Contracts;
 using BookStore.Services.Contracts;
 using System;
@@ -32,12 +33,7 @@ namespace BookStore.Services
             // check entity
             var entity = _repositoryManager.Book.GetOneBook(id, trackChanges);
 
-            if (entity is null)
-            {
-                string message = $"The book with id:{id} could not found.";
-                _loggerService.LogInfo(message);
-                throw new Exception(message);
-            }
+            if (entity is null) throw new BookNotFoundException(id);
 
             _repositoryManager.Book.DeleteOneBook(entity);
             _repositoryManager.Save();
@@ -50,19 +46,16 @@ namespace BookStore.Services
 
         public Book GetOneBook(int id, bool trackChanges)
         {
-            return _repositoryManager.Book.GetOneBook(id, trackChanges);
+            var book = _repositoryManager.Book.GetOneBook(id, trackChanges);
+            if (book is null) throw new BookNotFoundException(id);
+            return book;
         }
 
         public void UpdateOneBook(int id, Book book, bool trackChanges)
         {
             // check entity
             var entity = _repositoryManager.Book.GetOneBook(id, trackChanges);
-            if (entity is null)
-            {
-                string message = $"Book with id:{id} could not found.";
-                _loggerService.LogInfo(message);
-                throw new Exception(message);
-            }
+            if (entity is null) throw new BookNotFoundException(id);
 
             // check params
             if (book is null)
