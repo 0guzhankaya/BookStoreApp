@@ -1,4 +1,5 @@
-﻿using BookStore.Entities.Exceptions;
+﻿using BookStore.Entities.DataTransferObjects;
+using BookStore.Entities.Exceptions;
 using BookStore.Entities.Models;
 using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
@@ -47,13 +48,13 @@ namespace BookStore.Presentation.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateBook([FromRoute(Name = "id")] int id, [FromBody] Book book)
+        public IActionResult UpdateBook([FromRoute(Name = "id")] int id, [FromBody] BookDtoForUpdate bookDto)
         {
             // check book?
-            if (book is null)
+            if (bookDto is null)
                 return BadRequest(); // 400
 
-            _serviceManager.BookService.UpdateOneBook(id, book, true);
+            _serviceManager.BookService.UpdateOneBook(id, bookDto, true);
             return NoContent(); // 204
         }
 
@@ -71,7 +72,7 @@ namespace BookStore.Presentation.Controllers
             var entity = _serviceManager.BookService.GetOneBook(id, true);
 
             bookPatch.ApplyTo(entity);
-            _serviceManager.BookService.UpdateOneBook(id, entity, true);
+            _serviceManager.BookService.UpdateOneBook(id, new BookDtoForUpdate(entity.Id, entity.Title, entity.Price), true);
 
             return NoContent(); // 204
         }
