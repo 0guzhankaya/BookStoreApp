@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Repositories.EFCore
 {
+    // Repository Pattern
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected readonly RepositoryContext _repositoryContext;
