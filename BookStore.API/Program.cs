@@ -1,5 +1,6 @@
 using BookStore.API.Extensions;
 using BookStore.Presentation;
+using BookStore.Presentation.ActionFilters;
 using BookStore.Repositories.EFCore;
 using BookStore.Services;
 using BookStore.Services.Contracts;
@@ -24,6 +25,8 @@ builder.Services.AddControllers(config =>
     .AddApplicationPart(typeof(AssemblyReference).Assembly)
     .AddNewtonsoftJson();
 
+
+
 builder.Services.Configure<ApiBehaviorOptions>(options =>
  {
     options.SuppressModelStateInvalidFilter = true; 
@@ -39,6 +42,7 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.ConfigureActionFilters();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using BookStore.Repositories.Contracts;
+﻿using BookStore.Presentation.ActionFilters;
+using BookStore.Repositories.Contracts;
 using BookStore.Repositories.EFCore;
 using BookStore.Services;
 using BookStore.Services.Contracts;
@@ -22,5 +23,11 @@ namespace BookStore.API.Extensions
 
         public static void ConfigureLoggerService(this IServiceCollection services) => 
             services.AddSingleton<ILoggerService, LoggerManager>();
+
+        public static void ConfigureActionFilters(this IServiceCollection services)
+        {
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddSingleton<LogFilterAttribute>();
+        }
     }
 }

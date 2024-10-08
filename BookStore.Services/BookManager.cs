@@ -35,10 +35,7 @@ namespace BookStore.Services
 
         public async Task DeleteOneBookAsync(int id, bool trackChanges)
         {
-            // check entity
-            var entity = await _repositoryManager.Book.GetOneBookAsync(id, trackChanges);
-
-            if (entity is null) throw new BookNotFoundException(id);
+            var entity = await GetOneBookAndCheckExists(id, trackChanges);
 
             _repositoryManager.Book.DeleteOneBook(entity);
             await _repositoryManager.SaveAsync();
@@ -52,16 +49,14 @@ namespace BookStore.Services
 
         public async Task<BookDto> GetOneBookAsync(int id, bool trackChanges)
         {
-            var book = await _repositoryManager.Book.GetOneBookAsync(id, trackChanges);
-            if (book is null) throw new BookNotFoundException(id);
+            var book = await GetOneBookAndCheckExists(id, trackChanges);
             return _mapper.Map<BookDto>(book);
         }
 
         public async Task UpdateOneBookAsync(int id, BookDtoForUpdate bookDto, bool trackChanges)
         {
             // check entity
-            var entity = await _repositoryManager.Book.GetOneBookAsync(id, trackChanges);
-            if (entity is null) throw new BookNotFoundException(id);
+            var entity = await GetOneBookAndCheckExists(id, trackChanges);
 
             // Mapping
             entity = _mapper.Map<Book>(bookDto);
@@ -72,10 +67,7 @@ namespace BookStore.Services
 
         public async Task<(BookDtoForUpdate bookDtoForUpdate, Book book)> GetBookForPatchAsync(int id, bool trackChanges)
         {
-            var book = await _repositoryManager.Book.GetOneBookAsync(id, trackChanges);
-
-            if (book is null)
-                throw new BookNotFoundException(id);
+            var book = await GetOneBookAndCheckExists(id, trackChanges);
 
             var bookDtoForUpdate = _mapper.Map<BookDtoForUpdate>(book);
 
@@ -86,6 +78,16 @@ namespace BookStore.Services
         {
             _mapper.Map(bookDtoForUpdate, book);
             await _repositoryManager.SaveAsync();
+        }
+
+        private async Task<Book> GetOneBookAndCheckExists(int id, bool trackChanges)
+        {
+            // check entity
+            var entity = await _repositoryManager.Book.GetOneBookAsync(id, trackChanges);
+
+            if (entity is null) throw new BookNotFoundException(id);
+
+            return entity;
         }
     }
 }
