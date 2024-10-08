@@ -80,3 +80,19 @@
 2024-10-08 19:33:26.9591 Info Configuration initialized.
 2024-10-08 19:38:40.9378 Info AppDomain Shutting down. LogFactory closing...
 2024-10-08 19:38:40.9647 Info LogFactory has been closed.
+2024-10-08 21:23:43.1607 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-10-08 21:23:43.1827 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.4.2778. Product version: 5.3.4+73d83d3161d31288ca5c554cc50d27b6bed5f28b. GlobalAssemblyCache: False
+2024-10-08 21:23:43.1958 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\OguzhanKaya2\source\repos\BookStoreApp\BookStore.API\nlog.config
+2024-10-08 21:23:43.2088 Info Configuration initialized.
+2024-10-08 21:33:24.0044 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-10-08 21:33:24.0291 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.4.2778. Product version: 5.3.4+73d83d3161d31288ca5c554cc50d27b6bed5f28b. GlobalAssemblyCache: False
+2024-10-08 21:33:24.0513 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\OguzhanKaya2\source\repos\BookStoreApp\BookStore.API\nlog.config
+2024-10-08 21:33:24.0695 Info Configuration initialized.
+2024-10-08 22:34:05.6200 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-10-08 22:34:05.6397 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.4.2778. Product version: 5.3.4+73d83d3161d31288ca5c554cc50d27b6bed5f28b. GlobalAssemblyCache: False
+2024-10-08 22:34:05.6573 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\OguzhanKaya2\source\repos\BookStoreApp\BookStore.API\nlog.config
+2024-10-08 22:34:05.6730 Info Configuration initialized.
+2024-10-08 22:35:43.3787 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-10-08 22:35:43.4079 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.4.2778. Product version: 5.3.4+73d83d3161d31288ca5c554cc50d27b6bed5f28b. GlobalAssemblyCache: False
+2024-10-08 22:35:43.4353 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\OguzhanKaya2\source\repos\BookStoreApp\BookStore.API\nlog.config
+2024-10-08 22:35:43.4588 Info Configuration initialized.

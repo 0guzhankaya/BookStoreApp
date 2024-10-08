@@ -2,6 +2,7 @@
 using BookStore.Entities.DataTransferObjects;
 using BookStore.Entities.Exceptions;
 using BookStore.Entities.Models;
+using BookStore.Entities.RequestFeatures;
 using BookStore.Repositories.Contracts;
 using BookStore.Services.Contracts;
 using System;
@@ -41,10 +42,11 @@ namespace BookStore.Services
             await _repositoryManager.SaveAsync();
         }
 
-        public async Task<IEnumerable<BookDto>> GetAllBooksAsync(bool trackChanges)
+        public async Task<(IEnumerable<BookDto> books, MetaData metaData)> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
-            var books = await _repositoryManager.Book.GetAllBooksAsync(trackChanges);
-            return _mapper.Map<IEnumerable<BookDto>>(books); // Book --> BookDto
+            var booksWithMetaData = await _repositoryManager.Book.GetAllBooksAsync(bookParameters, trackChanges);
+            var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData); 
+            return (booksDto, booksWithMetaData.MetaData);
         }
 
         public async Task<BookDto> GetOneBookAsync(int id, bool trackChanges)

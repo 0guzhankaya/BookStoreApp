@@ -1,6 +1,7 @@
 ﻿using BookStore.Entities.DataTransferObjects;
 using BookStore.Entities.Exceptions;
 using BookStore.Entities.Models;
+using BookStore.Entities.RequestFeatures;
 using BookStore.Presentation.ActionFilters;
 using BookStore.Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BookStore.Presentation.Controllers
@@ -26,10 +28,12 @@ namespace BookStore.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBooksAsync()
+        public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
         {
-            var books = await _serviceManager.BookService.GetAllBooksAsync(false);
-            return Ok(books);
+            var pagedResult = await _serviceManager.BookService.GetAllBooksAsync(bookParameters, false);
+            Response.Headers.Add("X-Pegination", JsonSerializer.Serialize(pagedResult.metaData));
+
+            return Ok(pagedResult.books);
         }
 
         [HttpGet("{id:int}")]
