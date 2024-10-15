@@ -14,6 +14,8 @@ namespace BookStore.Entities.RequestFeatures
         public int PageNumber { get; set; }
 
 		// Full-property
+		private int _pageSize;
+
 		public int PageSize
         {
 			get { return PageSize; }

@@ -10,11 +10,10 @@ using System.Threading.Tasks;
 
 namespace BookStore.Repositories.EFCore
 {
-    public class BookRepository : RepositoryBase<Book>, IBookRepository
+    public sealed class BookRepository : RepositoryBase<Book>, IBookRepository
     {
         public BookRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
-
         }
 
         public void CreateOneBook(Book book) => Create(book);
@@ -23,10 +22,10 @@ namespace BookStore.Repositories.EFCore
 
         public async Task<PagedList<Book>> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
-            var books = await FindAll(trackChanges).OrderBy(b => b.Id).ToListAsync();
+            var books = await FindAll(trackChanges).FilterBooks(bookParameters.MinPrice, bookParameters.MaxPrice)
+                .OrderBy(b => b.Id).ToListAsync();
             return PagedList<Book>.ToPagedList(books, bookParameters.PageNumber, bookParameters.PageSize);
         }
-
 
         public async Task<Book> GetOneBookAsync(int id, bool trackChanges) => await FindByCondition(b => b.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
 
